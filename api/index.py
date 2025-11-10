@@ -15,7 +15,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Gemini API Key
-API_KEY = os.environ.get('GEMINI_API_KEY', 'AQ.Ab8RN6JV3nQZw9pBE9fhmkGDLAl2ncDhvVvGakCaBj06vuUefA')
+API_KEY = os.environ.get('GEMINI_API_KEY', 'AIzaSyB7WDJTScqJpL02RR8ybWPfC9EIN5T4bNo')
 
 # AI Agent 초기화 (lazy loading)
 agent = None
