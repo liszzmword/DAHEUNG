@@ -2,16 +2,18 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sys
 import os
+import json
 
-# 상위 디렉토리를 Python 경로에 추가
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# 현재 디렉토리를 Python 경로에 추가
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 try:
     from ai_agent import B2BAnalystAgent
     from visualizer import DataVisualizer
-    import json
 except Exception as e:
     print(f"Import error: {e}")
+    import traceback
+    traceback.print_exc()
     raise
 
 app = Flask(__name__)
