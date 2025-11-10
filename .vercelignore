@@ -12,3 +12,9 @@ venv/
 test_agent.py
 *.swp
 *.swo
+*.md
+.git/
+.gitignore
+b2b-ai-agent/
+static/
+app.py
