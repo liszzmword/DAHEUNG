@@ -3,6 +3,4 @@ flask-cors
 pandas
 openpyxl
 google-generativeai
-plotly
 python-dotenv
-gunicorn

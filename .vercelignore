@@ -18,3 +18,8 @@ test_agent.py
 b2b-ai-agent/
 static/
 app.py
+render.yaml
+.claude/
+DEPLOYMENT.md
+QUICK_DEPLOY.md
+README.md
