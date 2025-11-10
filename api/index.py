@@ -1,15 +1,18 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sys
 import os
-from io import BytesIO
 
 # 상위 디렉토리를 Python 경로에 추가
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from ai_agent import B2BAnalystAgent
-from visualizer import DataVisualizer
-import json
+try:
+    from ai_agent import B2BAnalystAgent
+    from visualizer import DataVisualizer
+    import json
+except Exception as e:
+    print(f"Import error: {e}")
+    raise
 
 app = Flask(__name__)
 CORS(app)
@@ -24,16 +27,28 @@ def get_agent():
     """Agent 싱글톤 패턴"""
     global agent
     if agent is None:
+        if not API_KEY:
+            raise ValueError("GEMINI_API_KEY environment variable is not set")
         agent = B2BAnalystAgent(API_KEY)
     return agent
 
 @app.route('/')
 def index():
     """메인 페이지"""
-    html_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'public', 'index.html')
-    with open(html_path, 'r', encoding='utf-8') as f:
-        html_content = f.read()
-    return html_content
+    try:
+        html_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'public', 'index.html')
+        if os.path.exists(html_path):
+            with open(html_path, 'r', encoding='utf-8') as f:
+                html_content = f.read()
+            return html_content
+        else:
+            return jsonify({
+                'status': 'ok',
+                'message': 'B2B AI Agent API is running',
+                'api_endpoints': ['/api/chat', '/api/reset']
+            })
+    except Exception as e:
+        return jsonify({'error': f'Error loading index: {str(e)}'}), 500
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
@@ -67,9 +82,16 @@ def chat():
             'success': True
         })
 
+    except ValueError as e:
+        return jsonify({
+            'error': f'Configuration error: {str(e)}',
+            'success': False
+        }), 500
     except Exception as e:
+        import traceback
         return jsonify({
             'error': str(e),
+            'traceback': traceback.format_exc(),
             'success': False
         }), 500
 
