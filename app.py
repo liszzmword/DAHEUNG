@@ -15,7 +15,7 @@ elif os.path.exists('public'):
     app.static_folder = 'public'
 
 # Gemini API Key - 환경 변수에서 가져오기 (Vercel 배포용)
-API_KEY = os.environ.get('GEMINI_API_KEY', 'AIzaSyB7WDJTScqJpL02RR8ybWPfC9EIN5T4bNo')
+API_KEY = os.environ.get('GEMINI_API_KEY')
 
 # AI Agent 초기화 (lazy loading)
 agent = None
